@@ -3,6 +3,7 @@ const app = express();
 const mongoose = require('mongoose');
 const bookingRoutes = require('./Routes/bookingRoutes');
 const cors = require('cors');
+const contactRoutes = require('./Routes/contactRoutes');
 
 app.listen(3005, () => {
     console.log('Listening on port 3005');
@@ -23,3 +24,4 @@ app.use(cors({
 app.use(express.json())
 
 app.use('/book',bookingRoutes)
+app.use('/contact',contactRoutes)
