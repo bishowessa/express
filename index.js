@@ -4,6 +4,11 @@ const mongoose = require('mongoose');
 const bookingRoutes = require('./Routes/bookingRoutes');
 const cors = require('cors');
 const contactRoutes = require('./Routes/contactRoutes');
+const {cookie} = require('express-validator');
+const cookieParser = require('cookie-parser');
+const dotenv = require('dotenv');
+const path = require('node:path');
+const userRoutes = require('./Routes/userRoutes');
 
 app.listen(3005, () => {
     console.log('Listening on port 3005');
@@ -23,5 +28,8 @@ app.use(cors({
 
 app.use(express.json())
 
+app.use(cookieParser())
+
+app.use('/user',userRoutes)
 app.use('/book',bookingRoutes)
 app.use('/contact',contactRoutes)
