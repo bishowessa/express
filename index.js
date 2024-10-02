@@ -20,8 +20,10 @@ mongoose.connect('mongodb://localhost:27017/test').then(() => {
 
 app.use(cors({
     origin: 'http://localhost:4200',
-    withcredentials: true
+    withcredentials: true,
+    credentials: true
 }))
+
 
 
 

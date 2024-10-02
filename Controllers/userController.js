@@ -14,6 +14,12 @@ const getAllUsers = async (req, res) => {
     res.status(200).json(data);
 }
 
+const getUser = async (req, res) => {
+    let email = req.params.email;
+    let data = await UserModel.findOne({email: email});
+    res.status(200).json(data);
+}
+
 const registerUser = async (req, res) => {
     try{
         let newUser = req.body;
@@ -70,7 +76,7 @@ const loginUser = async (req, res) => {
 
     }catch(err){
         res.status(500).json({
-            status : 'fail',
+            status : responseMsgs.ERROR,
             data : err
         })
     }
@@ -108,6 +114,12 @@ const addAdmin = async (req, res) => {
 // Update user by email (admin-only)
 const updateUser = async (req, res) => {
     try {
+        const updatedData = req.body;
+        if (updatedData.password) {
+            const salt = await bcrypt.genSalt(10);
+            updatedData.password = await bcrypt.hash(updatedData.password, salt); // Hash the password
+        }
+
         const user = await User.findOneAndUpdate({ email: req.params.email }, req.body, { new: true });
         if (!user) {
             return res.status(404).json({ status: 'fail', message: 'User not found' });
@@ -129,7 +141,7 @@ const updateUser = async (req, res) => {
 // Delete user by email (admin-only)
 const deleteUser = async (req, res) => {
     try {
-        const user = await User.findOneAndDelete({ email: req.params.email });
+        const user = await User.findOneAndDelete({ id: req.params.id });
         if (!user) {
             return res.status(404).json({ status: 'fail', message: 'User not found' });
         }
@@ -154,5 +166,6 @@ module.exports = {
     getAllUsers,
     addAdmin,
     updateUser,
-    deleteUser
+    deleteUser,
+    getUser
 }

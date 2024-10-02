@@ -8,6 +8,10 @@ const adminMiddleware = require('../middlewares/adminMiddleware');
 router.route('/')
 .get(userMiddleware,adminMiddleware,userController.getAllUsers)
 
+router.route('/:email')
+.get(userMiddleware,adminMiddleware,userController.getUser)
+
+
 router.route('/register')
 .post(userValidations,userController.registerUser)
 
@@ -22,5 +26,6 @@ router.route('/updateUser/:email')
 
 router.route('/deleteUser/:email')
 .delete(userMiddleware,adminMiddleware,userController.deleteUser)
+
 
 module.exports = router;
